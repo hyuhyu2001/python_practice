@@ -264,7 +264,7 @@ def IpToNumber():
     a = raw_input('Enter your IP:')
     a_list = a.split('.')
     return ''.join(a_list) 
-'''
+
 
 #6-12. 字符串.
 #(a)创建一个名为findchr()的函数,函数声明如下.def findchr(string,char)
@@ -289,8 +289,32 @@ def findchr(string,char):
             elif len(char)>len(string):
                 return -1
     return '匹配2'
+#print findchr('dadadaddstring','string') 
+#注：咋才能查到索引的值?用enumerate()函数用于遍历序列中的元素以及它们的下标
 
-#print findchr('dadadaddstring','string')
 
+#6–13.字符串.string 模块包含三个函数,atoi(),atol(),和 atof(),它们分别负责把字符串转换成整数,长整型,和浮点型数字.
+#从 Python1.5 起,Python 的内建函数 int(),long(),float()也可以做相同的事了, complex()函数可以把字符串转换成复数.(然而 1,5 之前,这些转换函数只能工作于数字之上)
+#string 模块中并没有实现一个 atoc()函数,那么你来实现一个,atoc(),
+#接受单个字符串做参数输入,一个表示复数的字符串,例如,'-1.23e+4-5.67j',返回相应的复数对象.
+#你不能用 eval()函数,但可以使用 complex()函数,而且你只能在如下的限制之下使用 complex():complex(real,imag)的 real 和 imag 都必须是浮点值.
 
+def atoc(string):
+    flag_index = string.rfind('-')
+    if  flag_index < 0:
+        flag_index = string.rfind('+')
+    if flag_index > 0:
+        real = float(string[0:flag_index])
+        imag =  float(string[flag_index:-1])
+    return complex(real,imag)
 
+print atoc('-1.23e+4-5.67j')
+
+'''
+
+#6-14:随机数.设计一个"石头,剪子,布"游戏,有时又叫"Rochambeau",你小时候可能玩过,
+#下面是规则.你和你的对手,在同一时间做出特定的手势,必须是下面一种手势:石头,剪子,布.胜利者从下面的规则中产生,这个规则本身是个悖论.
+#(a) the paper covers the rock,布包石头.(b)石头砸剪子,(c)剪子剪破布.
+#在你的计算机版本中,用户输入她/他的选项,计算机找一个随机选项,然后由你的程序来决定一个胜利者或者平手.注意:最好的算法是尽量少的使用 if 语句.
+
+dict = {'1':'stone','2':'shear','3':'paper'}
