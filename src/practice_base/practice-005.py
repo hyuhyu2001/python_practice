@@ -1,5 +1,6 @@
 #!/user/bin/env python
 #encoding:utf-8
+from _random import Random
 
 
 '''
@@ -310,11 +311,143 @@ def atoc(string):
 
 print atoc('-1.23e+4-5.67j')
 
-'''
+
 
 #6-14:随机数.设计一个"石头,剪子,布"游戏,有时又叫"Rochambeau",你小时候可能玩过,
 #下面是规则.你和你的对手,在同一时间做出特定的手势,必须是下面一种手势:石头,剪子,布.胜利者从下面的规则中产生,这个规则本身是个悖论.
 #(a) the paper covers the rock,布包石头.(b)石头砸剪子,(c)剪子剪破布.
 #在你的计算机版本中,用户输入她/他的选项,计算机找一个随机选项,然后由你的程序来决定一个胜利者或者平手.注意:最好的算法是尽量少的使用 if 语句.
 
-dict = {'1':'stone','2':'shear','3':'paper'}
+from random import choice
+
+def Rochambeau(idea):
+    dict_choice = {'stone':'1','shear':'2','paper':'3'}
+    dict_result = {'11':'draw','22':'draw','33':'draw','12':'win','13':'lose','21':'lose','23':'win','31':'win','32':'lose'}
+    cpu_choice = choice(['stome','shear','paper'])
+    print "cpu choice : %s" % cpu_choice
+    return "the result is : %s" % dict_result[dict_choice[idea] + dict_choice[cpu_choice]]
+    
+if __name__ == "__main__":
+    while True:
+        idea = raw_input("Please input your idea: stone or shear or paper (e to exit)\n") 
+        print "-----------------------------------------"
+        if idea.lower().strip() == 'e':
+            print "your choice : %s" % idea
+            break
+        elif (idea != 'stone') and (idea != 'shear') and (idea != 'paper'):
+            print "Please check your input"
+            continue
+        print Rochambeau(idea)
+
+#6–15.转换(a)给出两个可识别格式的日期,比如 MM/DD/YY 或者 DD/MM/YY 格式,计算出两个日期间的天数.
+#(b)给出一个人的生日,计算从此人出生到现在的天数,包括所有的闰月.
+#(c)还是上面的例子,计算出到此人下次过生日还有多少天
+
+import datetime
+import time
+
+def datadiff(a,b):#通过datetime模块计算两个日期间的天数
+    a = a.split('/')
+    b = b.split('/')
+    a = datetime.datetime(int(a[2]),int(a[0]),int(a[1]))
+    b = datetime.datetime(int(b[2]),int(b[0]),int(b[1]))
+    return abs((a-b).days) #取绝对值
+
+a = '06/03/2016'
+b = '06/17/2016'
+c = time.strftime('%m/%d/%Y') #获取当前时间，格式化输出年月日time.strftime('%Y-%m-%d %H:%M:%S') 
+print datadiff(a, c)
+
+#c，判断a-c是否大于0，如果小于0则将生日的year+1，再进行相减
+
+
+#6–16.矩阵.处理矩阵 M 和 N 的加和乘操作.
+import numpy as py
+
+M = np.array([2,3],[1,5])
+N = np.array([1,4],[4,6])
+print M+N
+print np.dot(M,N)
+
+
+#6–17.方法.实现一个叫 myPop()的函数,功能类似于列表的 pop()方法,用一个列表作为输入,移除列表的最新一个元素,并返回它.
+def myPop(lst):
+    sizeoflst = len(lst)
+    lstElement = lst[sizeoflst-1]
+    del lst[sizeoflst-1]
+    return lstElement
+
+if __name__ == "__main__":
+    lst = [3, 6, 7, 0 ,3]
+    print lst
+    print myPop(lst)
+    print lst
+    print myPop(lst)
+    print lst
+'''
+ 
+#6–19.多列输出.有任意项的序列或者其他容器,把它们等距离分列显示.由调用者提供数据和输出格式.
+#例如,如果你传入 100 个项并定义 3 列输出,按照需要的模式显示这些数据.这种情况下,应该是两列显示 33 个项,最后一列显示 34 个.
+#你可以让用户来选择水平排序或者垂直排序.
+
+def reverse_matrix(a_list):
+    """反转矩阵"""
+    row = len(a_list)
+    col = len(a_list[0])
+    col_temp = []
+    res_rev_matrix = []
+    for c in range(col):
+        for r in range(row):
+            col_temp.append(a_list[r][c])
+        res_rev_matrix.append(col_temp)
+        col_temp = []  # 必须清空该列表，否则影响后面的数据
+
+    " 不足的空格补'*' "
+    sub = len(res_rev_matrix[0]) - (len(a_list[row - 1]) - len(a_list[row - 2]))
+    if sub != len(res_rev_matrix[0]):
+        res_rev_matrix.append(["*"] * sub + a_list[row - 1][col:len(a_list[row - 1])])
+    return res_rev_matrix
+
+
+def multi_print(b_list, line, style=True):
+    length = len(b_list)
+    res_matrix = []
+    interval = length / line
+    remainder = length % line
+    if 0 == remainder:
+        x = 0
+        y = 0
+        while y < line:
+            res_matrix.append(b_list[x:x + interval])
+            x += interval
+            y += 1
+    else:
+        x = 0
+        y = 0
+        while y < line-1:
+            res_matrix.append(b_list[x:x + interval])
+            x += interval
+            y += 1
+        res_matrix.append(b_list[x:x + interval+remainder])
+    if not style:
+        return reverse_matrix(res_matrix)
+    return res_matrix
+
+
+if __name__ == "__main__":
+    result = []
+    container = []
+    for i in range(1, 101):
+        container.append(i)
+
+    print "水平排序：\n"
+    result = multi_print(container, 5)
+    for i in result:
+        print i
+
+    print "\n\n"
+
+    print "垂直排序：\n"
+    result = multi_print(container, 8, False)
+    for i in result:
+        print i
