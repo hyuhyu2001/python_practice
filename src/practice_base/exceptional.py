@@ -21,11 +21,12 @@ def fetcher(obj,index):
 '''
 #fetcher(x,5) #由于没有第5个下标，报错：IndexError: string index out of range
 #修改为
+'''
 try:
     fetcher(x,5)   #尝试抓取第5个字符
 except IndexError: #如果发生异常【指出引发的异常名称】
     print fetcher(x,-1) #那就抓取最后一个字符,结果：e
-'''
+
     
 try:
     print fetcher(x,4)   
